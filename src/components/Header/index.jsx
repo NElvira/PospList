@@ -14,7 +14,9 @@ export const Header = ({children}) => {
 import React, { useState, useRef } from "react";
 import { Menu, AddAPhotoTwoTone, KeyboardArrowDown } from '@mui/icons-material';
 import { AppBar, Toolbar, IconButton, Typography, Box, Avatar, Modal, TextField, Button, Popper, Paper, Grow, ClickAwayListener, MenuList } from "@mui/material";
-export const Header = () => {
+
+
+export const Header = ({user}) => {
 
 
     const styleModal = {
@@ -43,11 +45,42 @@ export const Header = () => {
                             <Menu />
                         </IconButton>
                         <Typography variant="h6" component="h1" sx={{ fontSize: "1rem", flexGrow: 1 }}>
-                            Post List
+                            Posts List
                         </Typography>
+                        <Typography
+                                    variant="subtitle1"
+                                    sx={{ fontSize: "1.2rem"}}
+                                >
+                                    {user.name && <span>{user.name}</span>}
+                                </Typography>
+                                <Typography
+                                    variant="subtitle1"
+                                    color="text.secondary"
+                                    sx={{ fontSize: "1.2rem"}}
+                                >
+                                    {user.about && <span>{user.about}</span>}
+                                </Typography>
+                                <Typography
+                                    variant="subtitle1"
+                                    color="text.secondary"
+                                    sx={{ fontSize: "1.2rem", mb: 1}}
+                                >
+                                    {user.email && <span>{user.email}</span>}
+                                </Typography>
                     </Toolbar>
                 </Box>
+                <Box component="div" sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    <IconButton
+                        aria-label="menu"
+                        color="inherit"
+                        size="small"
+                        id="composition-button"
+                        aria-haspopup="true"
+                    >
+                        <KeyboardArrowDown />
+                    </IconButton>
+                </Box>
             </Box>
-        </AppBar >
+        </AppBar>
     );
 };

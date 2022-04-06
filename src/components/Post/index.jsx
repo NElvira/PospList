@@ -1,25 +1,21 @@
 import React from "react";
 import style from "./styles.module.css";
-import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, CardActions, Collapse, Grid } from "@mui/material";
-import { Favorite, MoreVert, ExpandMore } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, CardActions, Grid, Box, SvgIcon, MenuItem } from "@mui/material";
+import { Favorite, MoreVert, DeleteOutline } from '@mui/icons-material';
 import dayjs from "dayjs"; 
 import "dayjs/locale/ru";
 dayjs.locale("ru");
 
-const ExpandMoreStyle = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-}));
+export const Post = ({ _id, onPostLike, onDeletePost, currentUser, image, likes, title, author: { avatar, name, email }, text, created_at }) => {
+    const isLiked = likes.some(id => id === currentUser._id);
+    
+    function handleLikeClick() {
+        onPostLike({ _id, likes })
+    }
 
-export const Post = ({ image, likes, comments, title, author: { avatar, name, email }, text, created_at }) => {
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+    function handleDeletePostClick() {
+        onDeletePost(_id);
+    }
     
     const dataFormated = dayjs(created_at).format("dddd, DD-MMMM-YYYY hh:mm");
 
@@ -54,25 +50,40 @@ export const Post = ({ image, likes, comments, title, author: { avatar, name, em
                         {text}
                     </Typography>
                 </CardContent>
-                <CardActions sx={{marginTop: "auto"}} disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <Favorite />
-                    </IconButton>
-                    <ExpandMoreStyle
-                        expand={expanded}
-                        onClick={handleExpandClick}
-                        aria-label="show more"
-                    >
-                        <ExpandMore />
-                    </ExpandMoreStyle>
+                <CardActions sx={{ marginTop: "auto" }} disableSpacing >
+                    {likes?.length
+                        ? <Box
+                            component="span"
+                            sx={{
+                                display: "flex",
+                                background: "#f7f7f7",
+                                width: "auto",
+                                height: "auto",
+                                borderRadius: "25px",
+                            }}>
+                            <IconButton aria-label="add to favorites" onClick={handleLikeClick}>
+                                <SvgIcon>
+                                    {isLiked
+                                        ? <Favorite sx={{ color: "red" }} />
+                                        : <Favorite />}
+                                </SvgIcon>
+                            </IconButton>
+                            {!!likes?.length && <Typography color="text.secondary" sx={{ fontSize: "1.25rem", pr: 1.7, pt: 0.6, pl: 0.3 }}>{likes?.length}</Typography>}
+                        </Box>
+                        : <IconButton aria-label="add to favorites" onClick={handleLikeClick}>
+                            <SvgIcon>
+                                {isLiked
+                                    ? <Favorite sx={{ color: "red" }} />
+                                    : <Favorite />}
+                            </SvgIcon>
+                        </IconButton>
+                    }
+
+                    <MenuItem onClick={handleDeletePostClick}>
+                        <DeleteOutline sx={{ mr: "2px", mb: "5px" }} />
+                        Delete
+                    </MenuItem>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <Typography paragraph>
-                            {text}
-                        </Typography>
-                    </CardContent>
-                </Collapse>
             </Card>
         </Grid>
     )
