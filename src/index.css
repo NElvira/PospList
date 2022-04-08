@@ -1,5 +1,9 @@
 @import "~normalize.css";
 
+:root {
+    align-content: center;
+  }
+
 * {
     box-sizing: inherit;
 }
@@ -18,3 +22,13 @@ html {
 img {
     max-width: 100%;
 }
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }

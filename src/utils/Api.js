@@ -2,9 +2,10 @@ const onResponse = (response) => {
     return response.ok ? response.json() : Promise.reject(`Ошибка: ${response.status}`);
 }
 
-// const onError = (err) => {
-//     alert("Что-то пошло не так!");
-// }
+const onError = (err) => {
+    alert("Что-то пошло не так!");
+}
+
 class Api {
     constructor({ baseUrl, token, headers }) {
         this._baseUrl = baseUrl;
@@ -17,7 +18,7 @@ class Api {
         return fetch(`${this._baseUrl}/posts`, {
             headers: this.headers,
         }).then(onResponse)
-            // .catch(onError)
+            .catch(onError)
     }
 
     //получение всех пользователей-------------------------------------------
@@ -25,7 +26,7 @@ class Api {
         return fetch(`${this._baseUrl}/users`, {
             headers: this.headers,
         }).then(onResponse)
-            // .catch(onError)
+            .catch(onError)
     }
 
     // получение информации о пользователе по токену в заголовках
@@ -33,8 +34,15 @@ class Api {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this.headers,
         }).then(onResponse)
-            // .catch(onError)
+            .catch(onError)
     } 
+
+    getPostById(postID){
+        return fetch(`${this._baseUrl}/posts/${postID}`, {
+            headers: this.headers,
+        }).then(onResponse)
+            .catch(onError)
+    }
     
     // установка/снятие лайка
     changeLikeStatus(postId, isLike) {
@@ -42,6 +50,7 @@ class Api {
             method: isLike ? "DELETE" : "PUT",
             headers: this.headers,
         }).then(onResponse)
+            .catch(onError)
     }
 
     // удаление поста по ID
@@ -50,8 +59,27 @@ class Api {
             method: "DELETE",
             headers: this.headers,
         }).then(onResponse)
+            .catch(onError)
     
     }
+    addPost(newPost){
+        return fetch(`${this._baseUrl}/posts`, {
+            method: "POST",
+            body: JSON.stringify(newPost),
+            headers: this.headers,
+        }).then(onResponse)
+            .catch(onError)
+    }
+
+    updatePost(newPost, postID){
+        return fetch(`${this._baseUrl}/posts/${postID}`, {
+            method: "PUT",
+            body: JSON.stringify(newPost),
+            headers: this.headers,
+        }).then(onResponse)
+            .catch(onError)
+    }
+
 }
 
 

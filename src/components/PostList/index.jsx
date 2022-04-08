@@ -1,13 +1,14 @@
 import React from "react";
 import { Post } from "../Post";
 import { Grid } from '@mui/material';
+import style from "./styles.module.css";
 
-export const PostList = ({ onPostLike, postData, currentUser, onDeletePost }) => {
+export const PostList = ({ handlePostLike, posts, onDeletePost }) => {
     return (
-        <>
+        <div className={style["posts"]}>
             <Grid container spacing={2}>
-                {postData.map(post => <Post key={post._id} {...post} onPostLike={onPostLike} currentUser={currentUser} onDeletePost={onDeletePost} />)}
+                {posts.map((post) => <Post key={post._id} {...post} onPostLike={handlePostLike} onDeletePost={onDeletePost} />)}
             </Grid>
-        </>
+        </div>
     );
 };
