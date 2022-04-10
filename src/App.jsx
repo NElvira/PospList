@@ -1,45 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import "./index.css";
 import { Header } from "./components/Header";
 import { InfoBox } from "./components/InfoBox";
-import { Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
+import api from "./utils/Api";
+import { Route, Routes } from "react-router-dom";
 import { AllPosts } from "./Pages/AllPosts";
 import { NotFoundPage } from "./Pages/NotFoundPage/NotFoundPage";
 import { UserContext } from "./context/userContext";
 import { PostPage } from "./Pages/PostPage";
 import Spinner from "./components/Spinner";
-import "./index.css";
-import api from "./utils/Api"
 
 export const App = () => {
-    const [posts, setPosts] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        Promise.all([api.getAllPosts(), api.getUserInfo()])
-            .then(([postData, userData]) => {
+        Promise.all([api.getAllPosts(), api.getUserInfo()]).then(
+            ([postData, userData]) => {
                 setPosts(postData);
                 setCurrentUser(userData);
                 setIsLoading(false);
             }
-            );
+        );
     }, []);
 
     function handlePostLike({ _id, likes }) {
         const isLiked = likes.some((id) => id === currentUser._id);
-        api.changeLikeStatus(_id, isLiked)
-            .then((newPost) => {
-                const newPostState = posts.map(post => {
-                    return post._id === newPost._id ? newPost : post;
-                })
-                setPosts(newPostState);
-            })
+        api.changeLikeStatus(_id, isLiked).then((newPost) => {
+            const newPostLiked = posts.map((post) => {
+                return post._id === newPost._id ? newPost : post;
+            });
+
+            setPosts(newPostLiked);
+        });
     }
 
     function handleDeletePost({ _id }) {
         api.deletePost(_id).then(() => {
-            api.getPostsList().then((newPosts) => {
+            api.getAllPosts().then((newPosts) => {
                 setPosts(newPosts);
             });
         });
@@ -60,6 +60,7 @@ export const App = () => {
                                     posts={posts}
                                     handlePostLike={handlePostLike}
                                     handleDeletePost={handleDeletePost}
+                                    setPosts={setPosts}
                                 />
                         }
                     />
@@ -70,6 +71,7 @@ export const App = () => {
                                 posts={posts}
                                 handlePostLike={handlePostLike}
                                 handleDeletePost={handleDeletePost}
+                                setPosts={setPosts}
                             />
                         }
                     />

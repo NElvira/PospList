@@ -15,6 +15,7 @@ dayjs.locale("ru");
 export const Post = ({
   onPostLike,
   onDeletePost,
+  setPosts,
   title,
   image,
   _id,
@@ -23,7 +24,6 @@ export const Post = ({
   text,
   created_at,
   updated_at,
-  author: { name, about, email, avatar },
   author,
 }) => {
   let postDate = dayjs(created_at).format("dddd, HH:mm DD.MM.YYYY");
@@ -52,11 +52,11 @@ export const Post = ({
         </button>
       </div>
       <div className="user_info">
-        <img className="avatar" src={avatar} alt="img" />
+        <img className="avatar" src={author?.avatar} alt="img" />
         <div className="user">
-          <b>{name}</b>
-          <a>{about}</a>
-          <b>{email}</b>
+          <b>{author?.name}</b>
+          <a>{author?.about}</a>
+          <b>{author?.email}</b>
         </div>
       </div>
       <img src={image} alt="img" />
@@ -80,10 +80,10 @@ export const Post = ({
       </p>
       {author?._id === user?._id && (
         <div className="buttons">
-        <Button variant="contained" onClick={handleDeletePostClick}>
-          Удалить пост
-        </Button>
-        <UpdateModal />
+          <Button variant="contained" onClick={handleDeletePostClick}>
+            Удалить пост
+          </Button>
+          <UpdateModal setPosts={setPosts} posttext={text} postimage={image} posttitle={title} post_id={_id} posttags={tags} />
         </div>
       )}
     </Card>

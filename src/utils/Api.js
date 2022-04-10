@@ -35,15 +35,15 @@ class Api {
             headers: this.headers,
         }).then(onResponse)
             .catch(onError)
-    } 
+    }
 
-    getPostById(postID){
+    getPostById(postID) {
         return fetch(`${this._baseUrl}/posts/${postID}`, {
             headers: this.headers,
         }).then(onResponse)
             .catch(onError)
     }
-    
+
     // установка/снятие лайка
     changeLikeStatus(postId, isLike) {
         return fetch(`${this._baseUrl}/posts/likes/${postId}`, {
@@ -60,9 +60,9 @@ class Api {
             headers: this.headers,
         }).then(onResponse)
             .catch(onError)
-    
+
     }
-    addPost(newPost){
+    addPost(newPost) {
         return fetch(`${this._baseUrl}/posts`, {
             method: "POST",
             body: JSON.stringify(newPost),
@@ -71,10 +71,10 @@ class Api {
             .catch(onError)
     }
 
-    updatePost(newPost, postID){
+    updatePost(updateNewPost, postID) {
         return fetch(`${this._baseUrl}/posts/${postID}`, {
-            method: "PUT",
-            body: JSON.stringify(newPost),
+            method: "PATCH",
+            body: JSON.stringify(updateNewPost),
             headers: this.headers,
         }).then(onResponse)
             .catch(onError)

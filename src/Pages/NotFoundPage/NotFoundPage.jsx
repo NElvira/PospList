@@ -6,7 +6,7 @@ import { NotFound } from "../../components/NotFound";
 export const NotFoundPage = () => {
   const navigate = useNavigate()
   return (
-        <NotFound buttonAction={()=> navigate("/")}>
-        </NotFound>
+    <NotFound buttonAction={() => navigate("/")}>
+    </NotFound>
   );
 };

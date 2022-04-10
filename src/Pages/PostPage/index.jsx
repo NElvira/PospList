@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import api from "../../utils/Api";
 import { useParams, useNavigate } from "react-router-dom";
-import Spinner from "../../components/Spinner/index"; 
+import Spinner from "../../components/Spinner/index";
 import { OnePost } from "../../components/OnePost";
 import { NotFound } from "../../components/NotFound";
 
 
-export const PostPage = ({handleDeletePost, handlePostLike, posts}) => {
+export const PostPage = ({ handleDeletePost, handlePostLike, setPosts, posts, }) => {
   const navigate = useNavigate();
   const { postID } = useParams();
   const [postData, setPostData] = useState([]);
@@ -20,7 +20,7 @@ export const PostPage = ({handleDeletePost, handlePostLike, posts}) => {
       })
       .catch((err) => setIsError(true))
       .finally(() => setIsLoading(false))
-  },[postID, posts]);
+  }, [postID, posts]);
 
   return (
     <>
@@ -32,9 +32,9 @@ export const PostPage = ({handleDeletePost, handlePostLike, posts}) => {
         >
           Назад
         </button>
-        {isLoading  && <Spinner/> }
-        {isError && <NotFound buttonAction={()=>navigate("/")}/>}
-        {!isLoading && !isError && <OnePost {...postData} onDeletePost={handleDeletePost} onPostLike={handlePostLike}/>}
+        {isLoading && <Spinner />}
+        {isError && <NotFound buttonAction={() => navigate("/")} />}
+        {!isLoading && !isError && <OnePost {...postData} onDeletePost={handleDeletePost} onPostLike={handlePostLike} setPosts={setPosts} />}
       </div>
     </>
   );
